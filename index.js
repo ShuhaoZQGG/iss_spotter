@@ -31,10 +31,10 @@ fetchMyIP((error, ip) => {
           return;
         }
         // success, print out the deets!
-        for (eachTime of time) {
-        const dt = new Date(eachTime.risetime)
-        passTimes = `Next pass at ${dt} for ${eachTime.duration} seconds! \n`
-        console.log(passTimes);
+        for (const eachTime of time) {
+          const dt = new Date(eachTime.risetime);
+          passTimes = `Next pass at ${dt} for ${eachTime.duration} seconds! \n`;
+          console.log(passTimes);
         }
       });
       
