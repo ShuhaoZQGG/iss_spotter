@@ -23,8 +23,9 @@ const fetchMyIP = function(callback) {
       return;
     }
 
-    if (!body) {
-      callback(null, null);
+    if (!error && !body) {
+      const msg = 'IP is not found';
+      callback(Error(msg), null);
       return;
     }
     const ip = JSON.parse(body).ip;
@@ -32,4 +33,36 @@ const fetchMyIP = function(callback) {
   });
 };
 
-module.exports = { fetchMyIP };
+
+const fetchCoordsByIP = function(callback) {
+  const API = 'https://freegeoip.app/json/';
+  request(API, (error, response, body) => {
+    if (error) {
+      callback(error, null);
+      return;
+    }
+    
+    if (!body && !error) {
+      const msg = 'Coordinates are not found!';
+      callback(Error(msg), null);
+      return;
+    }
+
+    if (response.statusCode !== 200) {
+      const msg = `Status Code ${response.statusCode} when fetching IP. Response: ${body}`;
+      callback(Error(msg), null);
+      return;
+    }
+    
+    const coords = new Object();
+    coords.latitude = JSON.parse(body).latitude;
+    coords.longitude = JSON.parse(body).longitude;
+    callback(null, coords);
+    
+  });
+};
+
+module.exports = {
+  fetchMyIP,
+  fetchCoordsByIP
+};
