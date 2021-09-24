@@ -34,8 +34,8 @@ const fetchMyIP = function(callback) {
 };
 
 
-const fetchCoordsByIP = function(callback) {
-  const API = 'https://freegeoip.app/json/';
+const fetchCoordsByIP = function(ip, callback) {
+  const API = `https://freegeoip.app/json/${ip}`;
   request(API, (error, response, body) => {
     if (error) {
       callback(error, null);
@@ -88,8 +88,14 @@ const fetchISSFlyOverTimes = function(coords, callback) {
   });
 };
 
+const nextISSTimesForMyLocation = function(callback) {
+  // empty for now
+  callback();
+}
+
 module.exports = {
   fetchMyIP,
   fetchCoordsByIP,
-  fetchISSFlyOverTimes
+  fetchISSFlyOverTimes,
+  nextISSTimesForMyLocation
 };
