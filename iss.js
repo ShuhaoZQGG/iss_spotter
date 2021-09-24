@@ -62,7 +62,34 @@ const fetchCoordsByIP = function(callback) {
   });
 };
 
+const fetchISSFlyOverTimes = function(coords, callback) {
+  const API = `https://iss-pass.herokuapp.com/json/?lat=${coords.latitude}&lon=${coords.longitude}`;
+  request(API, (error, response, body) => {
+    if (error) {
+      callback(error, null);
+      return;
+    }
+
+    if (!error && !body) {
+      const msg = "Data cannot be found!"
+      callback(Error(msg), null);
+      return;
+    }
+
+    if (response.statusCode !== 200) {
+      const msg = `Status Code ${response.statusCode} when fetching overhead time. Response: ${body}`
+      callback(Error(msg), null);
+      return;
+    }
+
+    const times = JSON.parse(body).response;
+    callback(null, times);
+
+  })
+};
+
 module.exports = {
   fetchMyIP,
-  fetchCoordsByIP
+  fetchCoordsByIP,
+  fetchISSFlyOverTimes
 };
